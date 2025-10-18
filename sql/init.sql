@@ -1,6 +1,7 @@
 -- Таблица для заказов
-CREATE TABLE orders (
-    order_uid VARCHAR(50) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Orders (
+    id SERIAL PRIMARY KEY,
+    order_uid VARCHAR(50),
     track_number VARCHAR(50) NOT NULL,
     entry VARCHAR(10) NOT NULL,
     deliveries_id INTEGER,
@@ -17,7 +18,7 @@ CREATE TABLE orders (
 );
 
 -- Таблица для доставки
-CREATE TABLE deliveries (
+CREATE TABLE IF NOT EXISTS Deliveries (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
@@ -29,7 +30,7 @@ CREATE TABLE deliveries (
 );
 
 -- Таблица для платежей
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS Payments (
     id SERIAL PRIMARY KEY,
     transaction VARCHAR(50),
     request_id VARCHAR(100),
@@ -44,7 +45,7 @@ CREATE TABLE payments (
 );
 
 -- Таблица для товаров
-CREATE TABLE items (
+CREATE TABLE IF NOT EXISTS Items (
     id SERIAL PRIMARY KEY,
     chrt_id INTEGER NOT NULL,
     track_number VARCHAR(50),
@@ -58,3 +59,7 @@ CREATE TABLE items (
     brand VARCHAR(100),
     status INTEGER
 );
+
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("deliveries_id") REFERENCES "deliveries"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("payments_id") REFERENCES "payments"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk3" FOREIGN KEY ("items_id") REFERENCES "items"("id");

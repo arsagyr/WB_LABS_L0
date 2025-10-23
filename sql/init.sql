@@ -1,12 +1,9 @@
 -- Таблица для заказов
-CREATE TABLE IF NOT EXISTS Orders (
+CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     order_uid VARCHAR(50),
     track_number VARCHAR(50) NOT NULL,
     entry VARCHAR(10) NOT NULL,
-    deliveries_id INTEGER,
-    payments_id INTEGER,
-    items_id INTEGER,
     locale VARCHAR(10),
     internal_signature VARCHAR(255),
     customer_id VARCHAR(50),
@@ -14,11 +11,14 @@ CREATE TABLE IF NOT EXISTS Orders (
     shardkey VARCHAR(10),
     sm_id INTEGER,
     date_created TIMESTAMP WITH TIME ZONE,
-    oof_shard VARCHAR(10)
+    oof_shard VARCHAR(10),
+    -- Связи с другими таблицами
+    delivery_id INTEGER NOT NULL,
+    payment_id INTEGER NOT NULL
 );
 
 -- Таблица для доставки
-CREATE TABLE IF NOT EXISTS Deliveries (
+CREATE TABLE deliveries (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Deliveries (
 );
 
 -- Таблица для платежей
-CREATE TABLE IF NOT EXISTS Payments (
+CREATE TABLE payments (
     id SERIAL PRIMARY KEY,
     transaction VARCHAR(50),
     request_id VARCHAR(100),
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS Payments (
 );
 
 -- Таблица для товаров
-CREATE TABLE IF NOT EXISTS Items (
+CREATE TABLE items (
     id SERIAL PRIMARY KEY,
     chrt_id INTEGER NOT NULL,
     track_number VARCHAR(50),
@@ -57,9 +57,11 @@ CREATE TABLE IF NOT EXISTS Items (
     total_price INTEGER,
     nm_id INTEGER,
     brand VARCHAR(100),
-    status INTEGER
+    status INTEGER,
+    -- Связь с заказом
+    order_id INTEGER NOT NULL
 );
 
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("deliveries_id") REFERENCES "deliveries"("id");
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("payments_id") REFERENCES "payments"("id");
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk3" FOREIGN KEY ("items_id") REFERENCES "items"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("delivery_id") REFERENCES "deliveries"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("payment_id") REFERENCES "payments"("id");
+ALTER TABLE "items" ADD CONSTRAINT "orders_fk3" FOREIGN KEY ("order_id") REFERENCES "orders"("id");

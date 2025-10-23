@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Создание</title>
+    </head>
+    <body>
+        <h3>Добавить актёра</h3>
+        <form method="POST">
+            <label>Фамилия</label><br>
+            <input type="text" name="familyname" pattern="[A-Za-zА-Яа-яЁё]+$" required /><br><br>
+            <label>Имя</label><br>
+            <input type="text" name="givenname" pattern="[A-Za-zА-Яа-яЁё]+$" required /><br><br>
+            <label>Национальность</label><br><br>
+            <input type="text" name="nation" pattern="[A-Za-zА-Яа-яЁё]+$" required /><br><br>
+            <label>Число</label><br><br>
+            <input  type="number" name="number" pattern="[0-9]{0,}" required />><br><br>
+            <label>Гонорар</label><br><br>
+            <input type="number" step="0.0001" name="honorar" pattern="[0-9]{0,}" required />><br><br>
+            
+            <table>
+                <tr><button type="submit">Отправить</button></tr>
+                <tr><input type="button" onclick="location.href='/';" value="Вернуться" /></tr>
+            </table>
+        </form>
+    </body>
+</html>
+

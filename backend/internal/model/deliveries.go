@@ -1,16 +1,18 @@
 package model
 
-// id SERIAL PRIMARY KEY,
-// name VARCHAR(100) NOT NULL,
-// phone VARCHAR(20),
-// zip VARCHAR(20),
-// city VARCHAR(100),
-// address TEXT,
-// region VARCHAR(100),
-// email VARCHAR(100)
+import "fmt"
 
-type Deliveries struct {
-	Id      int    `json:"id" db:"id"`        //
+// "delivery": {
+//   "name": "Test Testov",
+//   "phone": "+9720000000",
+//   "zip": "2639809",
+//   "city": "Kiryat Mozkin",
+//   "address": "Ploshad Mira 15",
+//   "region": "Kraiot",
+//   "email": "test@gmail.com"
+// },
+
+type Delivery struct {
 	Name    string `json:"name" db:"name"`    //
 	Phone   string `json:"phone" db:"name"`   //
 	Zip     string `json:"zip" db:"name"`     //
@@ -18,4 +20,14 @@ type Deliveries struct {
 	Address string `json:"address" db:"name"` //
 	Region  string `json:"region" db:"name"`  //
 	Email   string `json:"email" db:"name"`   //
+}
+
+func (d Delivery) Print() {
+	fmt.Println(d.Name)
+	fmt.Println(d.Phone)
+	fmt.Println(d.Zip)
+	fmt.Println(d.City)
+	fmt.Println(d.Address)
+	fmt.Println(d.Region)
+	fmt.Println(d.Email)
 }

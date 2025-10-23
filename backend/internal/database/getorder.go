@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"time"
 	"wb_labs_l0/backend/internal/model"
 )
 
@@ -63,8 +64,11 @@ func CreateOrderFile(id string) {
 	if err != nil {
 		log.Println(err)
 	}
-
-	err = os.WriteFile("cache/order.json", data, 0644)
+	start := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
+	d := time.Now().Sub(start)
+	s := d.String()
+	s = "cache/" + s + "order.json"
+	err = os.WriteFile(s, data, 0644)
 	if err != nil {
 		log.Println(err)
 	}

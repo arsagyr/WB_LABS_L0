@@ -2,41 +2,47 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"net/http"
 	"wb_labs_l0/backend/internal/database"
+	"wb_labs_l0/backend/internal/handlers"
 
+	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
 
-// func runServer() {
-// 	db, err := sql.Open("postgres", "user=postgres password=password dbname=testactors sslmode=disable")
-// 	if err != nil {
-// 		log.Println(err)
-// 	}
-// 	database.DB = db
-// 	defer database.DB.Close()
-
-// 	router := mux.NewRouter()
-// 	router.HandleFunc("/", handlers.IndexHandler)
-// 	router.HandleFunc("/create", handlers.CreateHandler)
-// 	router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditPage).Methods("GET")
-// 	router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditHandler).Methods("POST")
-// 	router.HandleFunc("/delete/{id:[0-9]+}", handlers.DeleteHandler)
-
-// 	http.Handle("/", router)
-// 	fmt.Println("Server is listening...")
-
-// 	http.ListenAndServe("localhost:8181", nil)
-// }
-
-func main() {
-	// runServer()
+func runServer() {
 	db, err := sql.Open("postgres", "user=postgres password=password dbname=orders sslmode=disable")
 	if err != nil {
 		log.Println(err)
 	}
 	database.DB = db
-	database.CreateOrderFile("1")
-	db.Close()
+	defer database.DB.Close()
+
+	router := mux.NewRouter()
+	router.HandleFunc("/items", handlers.ItemsByIDTablePage)
+	router.HandleFunc("/orders", handlers.OrderTablePage)
+	router.HandleFunc("/all_items", handlers.AllItemsTablePage)
+	// router.HandleFunc("/create", handlers.CreateHandler)
+	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditPage).Methods("GET")
+	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditHandler).Methods("POST")
+	// router.HandleFunc("/delete/{id:[0-9]+}", handlers.DeleteHandler)
+
+	http.Handle("/", router)
+	fmt.Println("Server is listening...")
+
+	http.ListenAndServe("localhost:8181", nil)
+}
+
+func main() {
+	runServer()
+	// db, err := sql.Open("postgres", "user=postgres password=password dbname=orders sslmode=disable")
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	// database.DB = db
+	// database.CreateOrderFile("1")
+	// db.Close()
 
 }

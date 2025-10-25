@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Товаров</title>
+    <style> </style>
+	<link rel="stylesheet" type="text/css" href="css/STYLES.css">
+
+</head>
+<body>
+   <form action="#"> 
+	<fieldset>
+	<legend>Таблица товаров</legend>
+	<!-- <table>	<br>
+		<tr>
+			<input type="button" onclick="location.href='/create';" value="Добавить заказ" /> 
+		</tr>
+	</table> -->
+	<table border=2>
+		<thead>
+			<th>Chrt_id</th>
+			<th>Track number</th>
+			<th>Price</th>
+			<th>Rid</th>
+			<th>Name</th>
+			<th>Sale</th>
+			<th>Size</th>
+			<th>Total price</th>
+			<th>Nm ID</th>
+			<th>Brand</th>
+			<th>Status</th>
+			
+		</thead>
+		{{range . }}
+		<tr>
+			<td  class="displayed">{{.Chrt_id}}</td>
+			<td  class="displayed">{{.Track_number}}</td>
+			<td  class="displayed">{{.Price}}</td>
+			<td  class="displayed">{{.Rid}}</td>
+			<td  class="displayed">{{.Name}}</td>
+			<td  class="displayed">{{.Sale}}</td>
+			<td  class="displayed">{{.Size}}</td>
+			<td  class="displayed">{{.Total_price}}</td>
+			<td  class="displayed">{{.Nm_id}}</td>
+			<td  class="displayed">{{.Brand}}</td>
+			<td  class="displayed">{{.Status}}</td>
+		</tr>
+		{{end}}
+	</table>
+	</fieldset>
+	</form>
+</body>
+</html>
+<!-- <th>ID</th> -->
+<!-- <td>
+	<a href="/edit/{{.Id}}">Изменить</a>|
+	<a href="/delete/{{.Id}}">Удалить</a>
+</td> -->

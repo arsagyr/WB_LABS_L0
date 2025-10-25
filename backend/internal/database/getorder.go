@@ -73,3 +73,38 @@ func CreateOrderFile(id string) {
 		log.Println(err)
 	}
 }
+
+func GetOrdersDB() []model.OrderDB {
+	rows, err := DB.Query(`
+	SELECT * FROM Orders 
+	`)
+	if err != nil {
+		log.Println(err)
+	}
+	ordersdb := []model.OrderDB{}
+	for rows.Next() {
+		orderdb := model.OrderDB{}
+		err := rows.Scan(
+			&orderdb.Id,
+			&orderdb.Order_uid,
+			&orderdb.Track_number,
+			&orderdb.Entry,
+			&orderdb.Locale,
+			&orderdb.Internal_signature,
+			&orderdb.Customer_id,
+			&orderdb.Delivery_service,
+			&orderdb.Shardkey,
+			&orderdb.Sm_id,
+			&orderdb.Date_created,
+			&orderdb.Oof_shard,
+			&orderdb.Delivery_id,
+			&orderdb.Payment_id,
+		)
+		if err != nil {
+			log.Println(err)
+		}
+		ordersdb = append(ordersdb, orderdb)
+	}
+
+	return ordersdb
+}

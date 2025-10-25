@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы</title>
+    <style> </style>
+	<link rel="stylesheet" type="text/css" href="css/STYLES.css">
+
+</head>
+<body>
+   <form action="#"> 
+	<fieldset>
+	<legend>Таблица заказов</legend>
+	<!-- <table>	<br>
+		<tr>
+			<input type="button" onclick="location.href='/create';" value="Добавить заказ" /> 
+		</tr>
+	</table> -->
+	<table border=2>
+		<thead>	  
+			<th>Order_uid</th>
+            <th>Track_number</th>
+            <th>Entry</th>
+			<th>Delivery</th>
+            <th>Payment</th>
+			<th>Items</th>
+            <th>Locale</th>
+			<th>Internal_signature</th>
+            <th>Customer_id</th>
+			<th>Delivery_service</th>
+            <th>Shardkey</th>
+			<th>Sm_id</th>
+            <th>Date_created</th>
+			<th>Oof_shard</th>
+		{{range . }}
+		<tr>
+			<td  class="displayed">{{.Order_uid}}</td>
+            <td  class="displayed">{{.Track_number}}</td>
+			<td  class="displayed">{{.Entry}}</td>
+			<td  class="displayed">{{.Delivery}}</td>
+			<td  class="displayed">{{.Payment}}</td>
+			<td  class="displayed">{{.Items}}</td>
+			<td  class="displayed">{{.Locale}}</td>
+			<td  class="displayed">{{.Internal_signature}}</td>
+			<td  class="displayed">{{.Customer_id}}</td>
+			<td  class="displayed">{{.Delivery_service}}</td>
+			<td  class="displayed">{{.Shardkey}}</td>
+			<td  class="displayed">{{.Sm_id}}</td>
+			<td  class="displayed">{{.Date_created}}</td>
+			<td  class="displayed">{{.Oof_shard}}</td>
+		</tr>
+		{{end}}
+	</table>
+	</fieldset>
+	</form>
+</body>
+</html>
+<!-- <td  class="displayed">{{.}}</td>
+<td  class="displayed">{{.}}</td>
+<td  class="displayed">{{.}}</td>
+<td  class="displayed">{{.}}</td>
+<td  class="displayed">{{.}}</td>
+<td  class="displayed">{{.}}</td> -->
+<!-- <td>
+	<a href="/edit/{{.Id}}">Изменить</a>|
+	<a href="/delete/{{.Id}}">Удалить</a>
+</td> -->

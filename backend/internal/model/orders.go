@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 // id SERIAL PRIMARY KEY,
 // order_uid VARCHAR(50),
 // track_number VARCHAR(50) NOT NULL,
@@ -48,4 +50,20 @@ type OrderDB struct {
 	Sm_id              int    `json:"sm_id" db:"sm_id"`                       //
 	Date_created       string `json:"date_created" db:"date_created"`         //
 	Oof_shard          string `json:"oof_shard" db:"oof_shard"`               //
+}
+
+func (o Order) Print() {
+	fmt.Println(o.Order_uid)
+	fmt.Println(o.Track_number)
+	fmt.Println(o.Entry)
+	o.Delivery.Print()
+	o.Payment.Print()
+	o.Items[0].Print()
+	fmt.Println(o.Locale)
+	fmt.Println(o.Internal_signature)
+	fmt.Println(o.Customer_id)
+	fmt.Println(o.Shardkey)
+	fmt.Println(o.Sm_id)
+	fmt.Println(o.Date_created)
+	fmt.Println(o.Oof_shard)
 }

@@ -5,8 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/nats-io/nats.go"
+
 	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/handlers"
+	subscribes "wb_labs_l0/backend/internal/subcribes"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -19,6 +24,17 @@ func runServer() {
 	}
 	database.DB = db
 	defer database.DB.Close()
+
+	url := os.Getenv("NATS_URL")
+	if url == "" {
+		url = nats.DefaultURL
+	}
+	log.Println(url)
+	nc, _ := nats.Connect(url)
+	defer nc.Drain()
+
+	subscribes.SubscribeToOrderJSON(nc)
+	subscribes.MakeJSONRequest(nc)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", handlers.Mainpage)

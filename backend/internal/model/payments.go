@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 //	"payment": {
 //		"transaction": "b563feb7b2b84b6test",
 //		"request_id": "",
@@ -37,4 +39,17 @@ type Payment struct {
 	DeliveryCost int    `json:"delivery_cost" db:"delivery_cost"`
 	GoodsTotal   int    `json:"goods_total" db:"goods_total"`
 	CustomFee    int    `json:"custom_fee" db:"custom_fee"`
+}
+
+func (p Payment) Print() {
+	fmt.Println(p.Transaction)
+	fmt.Println(p.RequestID)
+	fmt.Println(p.Currency)
+	fmt.Println(p.Provider)
+	fmt.Println(p.Amount)
+	fmt.Println(p.PaymentDt)
+	fmt.Println(p.Bank)
+	fmt.Println(p.DeliveryCost)
+	fmt.Println(p.GoodsTotal)
+	fmt.Println(p.CustomFee)
 }

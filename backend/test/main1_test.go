@@ -12,6 +12,6 @@ func main() {
 		log.Println(err)
 	}
 	database.DB = db
-	database.CreateOrderFile("1")
+	database.CreateOrderFile(1)
 	db.Close()
 }

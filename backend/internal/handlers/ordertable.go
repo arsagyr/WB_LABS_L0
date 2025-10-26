@@ -14,7 +14,7 @@ import (
 )
 
 func OrderTablePage(w http.ResponseWriter, r *http.Request) {
-	order := database.GetOrderByID("1")
+	order := database.GetOrderByID(1)
 	orders := []model.Order{order}
 	CreateOrderJSON(orders)
 	GetOrderDBTable(w, r, orders)

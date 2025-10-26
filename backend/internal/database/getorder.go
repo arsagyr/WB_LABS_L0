@@ -8,7 +8,7 @@ import (
 	"wb_labs_l0/backend/internal/model"
 )
 
-func GetOrderByID(orderID string) model.Order {
+func GetOrderByID(orderID int) model.Order {
 	row := DB.QueryRow(`
 	SELECT * FROM Orders
 	WHERE id =$1   
@@ -57,7 +57,7 @@ func GetOrderByID(orderID string) model.Order {
 	return order
 }
 
-func CreateOrderFile(id string) {
+func CreateOrderFile(id int) {
 
 	order := GetOrderByID(id)
 	data, err := json.MarshalIndent(order, "", "  ")

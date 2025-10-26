@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/model"
 
@@ -16,31 +15,37 @@ import (
 func OrderTablePage(w http.ResponseWriter, r *http.Request) {
 	order := database.GetOrderByID(1)
 	orders := []model.Order{order}
-	CreateOrderJSON(orders)
-	GetOrderDBTable(w, r, orders)
+	s := CacheFileNameMaker() + "order.json"
+	CreateOrderJSON(orders, s)
+	GetOrderDBTable(w, r, s)
 }
 func AllOrdersTablePage(w http.ResponseWriter, r *http.Request) {
 	orders := database.GetOrders()
-	CreateOrderJSON(orders)
-	GetOrderDBTable(w, r, orders)
+	s := CacheFileNameMaker() + "order.json"
+	CreateOrderJSON(orders, s)
+	GetOrderDBTable(w, r, s)
 }
-func CreateOrderJSON(orders []model.Order) {
+func CreateOrderJSON(orders []model.Order, filename string) {
 	data, err := json.MarshalIndent(orders, "", "  ")
 	if err != nil {
 		log.Println(err)
 	}
-
-	start := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
-	d := time.Now().Sub(start)
-	s := d.String()
-	s = "cache/" + s + "orders.json"
-	err = os.WriteFile(s, data, 0644)
+	err = os.WriteFile(filename, data, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func GetOrderDBTable(w http.ResponseWriter, r *http.Request, orders []model.Order) {
+func GetOrderDBTable(w http.ResponseWriter, r *http.Request, path string) {
+	file, err := os.ReadFile(path)
+	if err != nil {
+		log.Println(err)
+	}
+	var orders []model.Order
+	err = json.Unmarshal(file, &orders)
+	if err != nil {
+		panic(err)
+	}
 	tmpl, _ := template.ParseFiles("frontend/templates/orders.html")
 	tmpl.Execute(w, orders)
 }

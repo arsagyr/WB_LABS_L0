@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/model"
 
@@ -15,30 +14,37 @@ import (
 
 func PaymentTablePage(w http.ResponseWriter, r *http.Request) {
 	payments := database.GetPaymentByID(1)
-	CreatePaymentJSON(payments)
-	GetPaymentDBTable(w, r, payments)
+	s := CacheFileNameMaker() + "payments.json"
+	CreatePaymentJSON(payments, s)
+	GetPaymentDBTable(w, r, s)
 }
 func AllPaymentsTablePage(w http.ResponseWriter, r *http.Request) {
 	payments := database.GetAllPayments()
-	CreatePaymentJSON(payments)
-	GetPaymentDBTable(w, r, payments)
+	s := CacheFileNameMaker() + "payments.json"
+	CreatePaymentJSON(payments, s)
+	GetPaymentDBTable(w, r, s)
 }
-func CreatePaymentJSON(payments []model.Payment) {
+func CreatePaymentJSON(payments []model.Payment, filename string) {
 	data, err := json.MarshalIndent(payments, "", "  ")
 	if err != nil {
 		log.Println(err)
 	}
-	start := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
-	d := time.Now().Sub(start)
-	s := d.String()
-	s = "cache/" + s + "payments.json"
-	err = os.WriteFile(s, data, 0644)
+	err = os.WriteFile(filename, data, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func GetPaymentDBTable(w http.ResponseWriter, r *http.Request, payments []model.Payment) {
+func GetPaymentDBTable(w http.ResponseWriter, r *http.Request, path string) {
+	file, err := os.ReadFile(path)
+	if err != nil {
+		log.Println(err)
+	}
+	var payments []model.Payment
+	err = json.Unmarshal(file, &payments)
+	if err != nil {
+		panic(err)
+	}
 	tmpl, _ := template.ParseFiles("frontend/templates/payments.html")
 	tmpl.Execute(w, payments)
 }

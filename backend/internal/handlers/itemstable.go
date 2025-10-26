@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/model"
 
@@ -19,46 +18,36 @@ func ItemsByIDTablePage(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	items := database.GetItemsByOrderStringID(id)
-	CreateItemJSON(items)
-	GetItemJSON(w, r, items)
+	s := CacheFileNameMaker() + "itemsbyid.json"
+	CreateItemJSON(items, s)
+	GetItemJSON(w, r, s)
 }
 func AllItemsTablePage(w http.ResponseWriter, r *http.Request) {
-	items := database.GetItems()
-	CreateAllItemsJSON()
-	GetItemJSON(w, r, items)
+	s := CacheFileNameMaker() + "itemsbyid.json"
+	CreateItemJSON(database.GetItems(), s)
+	GetItemJSON(w, r, s)
 }
-func CreateItemJSON(items []model.Item) {
+func CreateItemJSON(items []model.Item, filename string) {
 	data, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		log.Println(err)
 	}
-	start := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
-	d := time.Now().Sub(start)
-	s := d.String()
-	s = "cache/" + s + "itemsbyid.json"
-	err = os.WriteFile(s, data, 0644)
+	err = os.WriteFile(filename, data, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func CreateAllItemsJSON() {
-	items := database.GetItemsByOrderID(1)
-	data, err := json.MarshalIndent(items, "", "  ")
+func GetItemJSON(w http.ResponseWriter, r *http.Request, path string) {
+	file, err := os.ReadFile(path)
 	if err != nil {
 		log.Println(err)
 	}
-	start := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
-	d := time.Now().Sub(start)
-	s := d.String()
-	s = "cache/" + s + "itemsall.json"
-	err = os.WriteFile(s, data, 0644)
+	var items []model.Item
+	err = json.Unmarshal(file, &items)
 	if err != nil {
-		log.Println(err)
+		panic(err)
 	}
-}
-
-func GetItemJSON(w http.ResponseWriter, r *http.Request, items []model.Item) {
 	tmpl, _ := template.ParseFiles("frontend/templates/items.html")
 	tmpl.Execute(w, items)
 }

@@ -31,7 +31,7 @@ func MakeJSONRequest(nc *nats.Conn) {
 	}
 
 	if err := json.Unmarshal(response.Data, &responseData); err != nil {
-		log.Printf("Error unmarshaling response: %v", err)
+		log.Printf("Error unmarsh~aling response: %v", err)
 		return
 	}
 

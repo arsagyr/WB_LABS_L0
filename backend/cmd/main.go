@@ -34,7 +34,7 @@ func runServer() {
 	defer nc.Drain()
 
 	subscribes.SubscribeToOrderJSON(nc)
-	subscribes.MakeJSONRequest(nc)
+	// subscribes.MakeJSONRequest(nc)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", handlers.Mainpage)

@@ -3,6 +3,7 @@ package subscribes
 import (
 	"encoding/json"
 	"log"
+	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/model"
 
 	"github.com/nats-io/nats.go"
@@ -43,6 +44,7 @@ func SubscribeToOrderJSON(nc *nats.Conn) {
 
 		log.Printf("Processed request for user ID: %v", request.Order_uid)
 		order.Print()
+		database.InsertOrder(order)
 
 	})
 

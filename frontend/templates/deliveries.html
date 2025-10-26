@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поставщики</title>
+    <style> </style>
+	<link rel="stylesheet" type="text/css" href="css/STYLES.css">
+
+</head>
+<body>
+   <form action="#"> 
+	<fieldset>
+	<legend>Таблица поставщиков</legend>
+	<table border=2>
+		<thead>	  
+			<th>Name</th>
+            <th>Phone</th>
+            <th>Zip</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Region</th>
+            <th>Email</th>
+		{{range . }}
+		<tr>
+			<td  class="displayed">{{.Name }}</td>
+            <td  class="displayed">{{.Phone}}</td>
+            <td  class="displayed">{{.Zip}}</td>
+            <td  class="displayed">{{.City}}</td>
+            <td  class="displayed">{{.Address}}</td>
+            <td  class="displayed">{{.Region}}</td>
+            <td  class="displayed">{{.Email}}</td>
+		</tr>
+		{{end}}
+	</table>
+	</fieldset>
+	</form>
+</body>
+</html>

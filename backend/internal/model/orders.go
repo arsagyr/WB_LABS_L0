@@ -38,8 +38,8 @@ type OrderDB struct {
 	Order_uid          string `json:"order_uid" db:"order_uid" `       // Order UID
 	Track_number       string `json:"track_number" db:"track_number" ` // track_number
 	Entry              string `json:"entry" db:"entry" `               //
-	Delivery_id        string `json:"delivery_id" db:"delivery_id" `   //
-	Payment_id         string `json:"payment_id" db:"payment_id" `     //
+	Delivery_id        int    `json:"delivery_id" db:"delivery_id" `   //
+	Payment_id         int    `json:"payment_id" db:"payment_id" `     //
 	Locale             string `json:"locale" db:"locale"`
 	Internal_signature string `json:"internal_signature" db:"internal_signature"`
 	Customer_id        string `json:"customer_id" db:"customer_id"`           //

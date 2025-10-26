@@ -21,9 +21,12 @@ func runServer() {
 	defer database.DB.Close()
 
 	router := mux.NewRouter()
-	router.HandleFunc("/items", handlers.ItemsByIDTablePage)
-	router.HandleFunc("/orders", handlers.OrderTablePage)
+	router.HandleFunc("/", handlers.Mainpage)
+	router.HandleFunc("/items/{id:[0-9]+}", handlers.ItemsByIDTablePage)
+	router.HandleFunc("/all_orders", handlers.AllOrdersTablePage)
 	router.HandleFunc("/all_items", handlers.AllItemsTablePage)
+	router.HandleFunc("/all_deliveries", handlers.AllDeliveriesTablePage)
+	router.HandleFunc("/all_payments", handlers.AllPaymentsTablePage)
 	// router.HandleFunc("/create", handlers.CreateHandler)
 	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditPage).Methods("GET")
 	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditHandler).Methods("POST")
@@ -37,12 +40,4 @@ func runServer() {
 
 func main() {
 	runServer()
-	// db, err := sql.Open("postgres", "user=postgres password=password dbname=orders sslmode=disable")
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// database.DB = db
-	// database.CreateOrderFile("1")
-	// db.Close()
-
 }

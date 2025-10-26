@@ -5,7 +5,42 @@ import (
 	"wb_labs_l0/backend/internal/model"
 )
 
-func GetItemsByOrderID(id string) []model.Item {
+func GetItemsByOrderID(id int) []model.Item {
+	rows, err := DB.Query(`
+	SELECT * FROM Items
+	WHERE order_id = $1
+	`, id)
+	if err != nil {
+		log.Println(err)
+	}
+	items := []model.Item{}
+	for rows.Next() {
+		item := model.Item{}
+		err := rows.Scan(
+			&id,
+			&item.Chrt_id,
+			&item.Track_number,
+			&item.Price,
+			&item.Rid,
+			&item.Name,
+			&item.Sale,
+			&item.Size,
+			&item.Total_price,
+			&item.Nm_id,
+			&item.Brand,
+			&item.Status,
+			&id,
+		)
+		if err != nil {
+			log.Println(err)
+		}
+		items = append(items, item)
+	}
+
+	return items
+}
+
+func GetItemsByOrderStringID(id string) []model.Item {
 	rows, err := DB.Query(`
 	SELECT * FROM Items
 	WHERE order_id = $1
@@ -47,6 +82,7 @@ func GetItemByChrt_id(id int) model.Item {
 	`, id)
 	item := model.Item{}
 	err := row.Scan(
+		&id,
 		&item.Chrt_id,
 		&item.Track_number,
 		&item.Price,
@@ -58,6 +94,7 @@ func GetItemByChrt_id(id int) model.Item {
 		&item.Nm_id,
 		&item.Brand,
 		&item.Status,
+		&id,
 	)
 	if err != nil {
 		log.Println(err)
@@ -73,6 +110,7 @@ func GetItemByID(id string) model.Item {
 	`, id)
 	item := model.Item{}
 	err := row.Scan(
+		&id,
 		&item.Chrt_id,
 		&item.Track_number,
 		&item.Price,
@@ -84,6 +122,7 @@ func GetItemByID(id string) model.Item {
 		&item.Nm_id,
 		&item.Brand,
 		&item.Status,
+		&id,
 	)
 	if err != nil {
 		log.Println(err)

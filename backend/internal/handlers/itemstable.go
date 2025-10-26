@@ -10,11 +10,15 @@ import (
 	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/model"
 
+	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
 
 func ItemsByIDTablePage(w http.ResponseWriter, r *http.Request) {
-	items := database.GetItemsByOrderID("1")
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	items := database.GetItemsByOrderStringID(id)
 	CreateItemJSON(items)
 	GetItemJSON(w, r, items)
 }
@@ -39,7 +43,7 @@ func CreateItemJSON(items []model.Item) {
 }
 
 func CreateAllItemsJSON() {
-	items := database.GetItemsByOrderID("1")
+	items := database.GetItemsByOrderID(1)
 	data, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		log.Println(err)

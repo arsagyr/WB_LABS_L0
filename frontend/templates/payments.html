@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Оплата</title>
+    <style> </style>
+	<link rel="stylesheet" type="text/css" href="css/STYLES.css">
+
+</head>
+<body>
+   <form action="#"> 
+	<fieldset>
+	<legend>Таблица оплат</legend>
+	<table border=2>
+		<thead>	  
+			<th>Transaction</th>
+			<th>RequestID</th>
+			<th>Currency</th>
+			<th>Provider</th>
+			<th>Amount</th>
+			<th>PaymentDt</th>
+			<th>Bank</th>
+			<th>DeliveryCost</th>
+			<th>GoodsTotal</th>
+			<th>CustomFee</th>
+		{{range . }}
+		<tr>
+			<td  class="displayed">{{.Transaction}}</td>
+			<td  class="displayed">{{.RequestID}}</td>
+			<td  class="displayed">{{.Currency}}</td>
+			<td  class="displayed">{{.Provider}}</td>
+			<td  class="displayed">{{.Amount}}</td>
+			<td  class="displayed">{{.PaymentDt}}</td>
+			<td  class="displayed">{{.Bank}}</td>
+			<td  class="displayed">{{.DeliveryCost}}</td>
+			<td  class="displayed">{{.GoodsTotal}}</td>
+			<td  class="displayed">{{.CustomFee}}</td>
+		</tr>
+		{{end}}
+	</table>
+	</fieldset>
+	</form>
+</body>
+</html>

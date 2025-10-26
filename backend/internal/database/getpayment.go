@@ -5,14 +5,46 @@ import (
 	"wb_labs_l0/backend/internal/model"
 )
 
-func GetPaymentByID(id string) model.Payment {
-	row := DB.QueryRow(`
+func GetPaymentByID(id int) []model.Payment {
+	rows, err := DB.Query(`
 	SELECT * FROM Payments
 	WHERE id = $1
 	`, id)
+	if err != nil {
+		log.Println(err)
+	}
+	payments := []model.Payment{}
+	for rows.Next() {
+		payment := model.Payment{}
+		err = rows.Scan(
+			&id,
+			&payment.Transaction,
+			&payment.RequestID,
+			&payment.Currency,
+			&payment.Provider,
+			&payment.Amount,
+			&payment.PaymentDt,
+			&payment.Bank,
+			&payment.DeliveryCost,
+			&payment.GoodsTotal,
+			&payment.CustomFee,
+		)
+		if err != nil {
+			log.Println(err)
+		}
+		payments = append(payments, payment)
+	}
+	return payments
+}
+func GetPaymentByTransaction(Transaction string) model.Payment {
+	row := DB.QueryRow(`
+	SELECT * FROM Payments
+	WHERE name = $1
+	`, Transaction)
+	var empty string
 	payment := model.Payment{}
 	err := row.Scan(
-		&id,
+		&empty,
 		&payment.Transaction,
 		&payment.RequestID,
 		&payment.Currency,
@@ -30,27 +62,35 @@ func GetPaymentByID(id string) model.Payment {
 
 	return payment
 }
-func GetPaymentByTransaction(Transaction string) model.Payment {
-	row := DB.QueryRow(`
+func GetAllPayments() []model.Payment {
+	rows, err := DB.Query(`
 	SELECT * FROM Payments
-	WHERE name = $1
-	`, Transaction)
-	payment := model.Payment{}
-	err := row.Scan(
-		&payment.Transaction,
-		&payment.RequestID,
-		&payment.Currency,
-		&payment.Provider,
-		&payment.Amount,
-		&payment.PaymentDt,
-		&payment.Bank,
-		&payment.DeliveryCost,
-		&payment.GoodsTotal,
-		&payment.CustomFee,
-	)
+	`)
 	if err != nil {
 		log.Println(err)
 	}
+	var empty string
+	payments := []model.Payment{}
+	for rows.Next() {
+		payment := model.Payment{}
+		err = rows.Scan(
+			&empty,
+			&payment.Transaction,
+			&payment.RequestID,
+			&payment.Currency,
+			&payment.Provider,
+			&payment.Amount,
+			&payment.PaymentDt,
+			&payment.Bank,
+			&payment.DeliveryCost,
+			&payment.GoodsTotal,
+			&payment.CustomFee,
+		)
+		if err != nil {
+			log.Println(err)
+		}
+		payments = append(payments, payment)
+	}
 
-	return payment
+	return payments
 }

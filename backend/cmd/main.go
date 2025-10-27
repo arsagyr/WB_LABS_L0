@@ -34,10 +34,16 @@ func runServer() {
 	defer nc.Drain()
 
 	subscribes.SubscribeToOrderJSON(nc)
-	// subscribes.MakeJSONRequest(nc)
 
 	router := mux.NewRouter()
+
+	// router.PathPrefix("/static/").Handler(http.StripPrefix("/static/",
+	// 	http.FileServer(http.Dir("./static"))))
+	// tmpl := template.Must(template.ParseGlob("templates/*.html"))
+	// handlers.Tmpl = tmpl
+
 	router.HandleFunc("/", handlers.Mainpage)
+	router.HandleFunc("/searchorder", handlers.SearchOrder)
 	router.HandleFunc("/items/{id:[0-9]+}", handlers.ItemsByIDTablePage)
 	router.HandleFunc("/all_orders", handlers.AllOrdersTablePage)
 	router.HandleFunc("/all_items", handlers.AllItemsTablePage)
@@ -47,6 +53,7 @@ func runServer() {
 	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditPage).Methods("GET")
 	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditHandler).Methods("POST")
 	// router.HandleFunc("/delete/{id:[0-9]+}", handlers.DeleteHandler)
+	// Статические файлы из embed
 
 	http.Handle("/", router)
 	fmt.Println("Server is listening...")

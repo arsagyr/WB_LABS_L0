@@ -30,7 +30,7 @@ package handlers
 // 		log.Println(err)
 // 		http.Error(w, http.StatusText(404), http.StatusNotFound)
 // 	} else {
-// 		tmpl, _ := template.ParseFiles("frontend/templates/edit.html")
+// 		tmpl, _ := template.ParseFiles("backend/templates/edit.html")
 // 		tmpl.Execute(w, a)
 // 	}
 // }

@@ -45,6 +45,6 @@ func GetPaymentDBTable(w http.ResponseWriter, r *http.Request, path string) {
 	if err != nil {
 		panic(err)
 	}
-	tmpl, _ := template.ParseFiles("frontend/templates/payments.html")
+	tmpl, _ := template.ParseFiles("backend/templates/payments.html")
 	tmpl.Execute(w, payments)
 }

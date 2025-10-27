@@ -48,6 +48,6 @@ func GetItemJSON(w http.ResponseWriter, r *http.Request, path string) {
 	if err != nil {
 		panic(err)
 	}
-	tmpl, _ := template.ParseFiles("frontend/templates/items.html")
+	tmpl, _ := template.ParseFiles("backend/templates/items.html")
 	tmpl.Execute(w, items)
 }

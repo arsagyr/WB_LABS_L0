@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Поиск</title>
+        <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+        <h3>Искать</h3>
+        <form method="POST">
+            <table>
+                    <td>Введите ID искомого заказа</td><td><input  type="number" step="1" name="id" pattern="[0-9]{0,}" required /></td>    
+            </table>
+        
+            <table>
+                <tr><button type="submit">Отправить</button></tr>
+                <tr><input type="button" onclick="location.href='/';" value="Вернуться" /></tr>
+            </table>
+        </form>
+    </body>
+</html>

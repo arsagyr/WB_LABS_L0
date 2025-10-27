@@ -45,6 +45,6 @@ func GetDeliveries(w http.ResponseWriter, r *http.Request, path string) {
 	if err != nil {
 		panic(err)
 	}
-	tmpl, _ := template.ParseFiles("frontend/templates/deliveries.html")
+	tmpl, _ := template.ParseFiles("backend/templates/deliveries.html")
 	tmpl.Execute(w, array)
 }

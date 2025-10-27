@@ -21,7 +21,7 @@ func OrderTablePage(w http.ResponseWriter, r *http.Request) {
 }
 func AllOrdersTablePage(w http.ResponseWriter, r *http.Request) {
 	orders := database.GetOrders()
-	s := CacheFileNameMaker() + "order.json"
+	s := CacheFileNameMaker() + "orders.json"
 	CreateOrderJSON(orders, s)
 	GetOrderDBTable(w, r, s)
 }
@@ -46,6 +46,6 @@ func GetOrderDBTable(w http.ResponseWriter, r *http.Request, path string) {
 	if err != nil {
 		panic(err)
 	}
-	tmpl, _ := template.ParseFiles("frontend/templates/orders.html")
+	tmpl, _ := template.ParseFiles("backend/templates/orders.html")
 	tmpl.Execute(w, orders)
 }

@@ -19,5 +19,6 @@ func CacheFileNameMaker() string {
 func Mainpage(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, _ := template.ParseFiles("backend/templates/mainpage.html")
+	tmpl.ExecuteTemplate(w, "backend/templates/mainpage.html", nil)
 	tmpl.Execute(w, r)
 }

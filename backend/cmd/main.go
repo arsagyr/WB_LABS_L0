@@ -7,14 +7,13 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	"github.com/nats-io/nats.go"
 
 	"wb_labs_l0/backend/internal/database"
 	"wb_labs_l0/backend/internal/handlers"
-	subscribes "wb_labs_l0/backend/internal/subcribes"
-
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
+	"wb_labs_l0/backend/internal/subscribes"
 )
 
 func runServer() {
@@ -34,29 +33,19 @@ func runServer() {
 	defer nc.Drain()
 
 	subscribes.SubscribeToOrderJSON(nc)
-
 	router := mux.NewRouter()
-
-	// router.PathPrefix("/static/").Handler(http.StripPrefix("/static/",
-	// 	http.FileServer(http.Dir("./static"))))
-	// tmpl := template.Must(template.ParseGlob("templates/*.html"))
-	// handlers.Tmpl = tmpl
 
 	router.HandleFunc("/", handlers.Mainpage)
 	router.HandleFunc("/searchorder", handlers.SearchOrder)
-	router.HandleFunc("/items/{id:[0-9]+}", handlers.ItemsByIDTablePage)
+	router.HandleFunc("/itemsByOrder/{id:[0-9]+}", handlers.ItemsByIDTablePage)
 	router.HandleFunc("/all_orders", handlers.AllOrdersTablePage)
 	router.HandleFunc("/all_items", handlers.AllItemsTablePage)
 	router.HandleFunc("/all_deliveries", handlers.AllDeliveriesTablePage)
 	router.HandleFunc("/all_payments", handlers.AllPaymentsTablePage)
-	// router.HandleFunc("/create", handlers.CreateHandler)
-	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditPage).Methods("GET")
-	// router.HandleFunc("/edit/{id:[0-9]+}", handlers.EditHandler).Methods("POST")
-	// router.HandleFunc("/delete/{id:[0-9]+}", handlers.DeleteHandler)
-	// Статические файлы из embed
 
 	http.Handle("/", router)
 	fmt.Println("Server is listening...")
+	log.Println("http:///localhost:8181")
 
 	http.ListenAndServe("localhost:8181", nil)
 }

@@ -2,16 +2,6 @@ package model
 
 import "fmt"
 
-// "delivery": {
-//   "name": "Test Testov",
-//   "phone": "+9720000000",
-//   "zip": "2639809",
-//   "city": "Kiryat Mozkin",
-//   "address": "Ploshad Mira 15",
-//   "region": "Kraiot",
-//   "email": "test@gmail.com"
-// },
-
 type Delivery struct {
 	Name    string `json:"name" db:"name"`    //
 	Phone   string `json:"phone" db:"name"`   //

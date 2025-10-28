@@ -23,7 +23,6 @@ func MakeJSONRequest(nc *nats.Conn) {
 		return
 	}
 
-	// Парсим ответ
 	var responseData struct {
 		Success bool        `json:"success"`
 		Message string      `json:"message"`

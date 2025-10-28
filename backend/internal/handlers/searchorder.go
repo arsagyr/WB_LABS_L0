@@ -18,7 +18,7 @@ func SearchOrder(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Println(err)
 		}
-		http.Redirect(w, r, "/items/"+id, 301)
+		http.Redirect(w, r, "/itemsByOrder"+id, 301)
 	} else {
 		http.ServeFile(w, r, "backend/templates/search.html")
 	}

@@ -1,22 +1,8 @@
 package model
 
-import "fmt"
-
-// id SERIAL PRIMARY KEY,
-// order_uid VARCHAR(50),
-// track_number VARCHAR(50) NOT NULL,
-// entry VARCHAR(10) NOT NULL,
-// deliveries_id INTEGER,
-// payments_id INTEGER,
-// items_id INTEGER,
-// locale VARCHAR(10),
-// internal_signature VARCHAR(255),
-// customer_id VARCHAR(50),
-// delivery_service VARCHAR(50),
-// shardkey VARCHAR(10),
-// sm_id INTEGER,
-// date_created TIMESTAMP WITH TIME ZONE,
-// oof_shard VARCHAR(10)
+import (
+	"fmt"
+)
 
 type Order struct {
 	Order_uid          string   `json:"order_uid" db:"order_uid" `       // Order UID
@@ -62,6 +48,7 @@ func (o Order) Print() {
 	fmt.Println(o.Locale)
 	fmt.Println(o.Internal_signature)
 	fmt.Println(o.Customer_id)
+	fmt.Println(o.Delivery_service)
 	fmt.Println(o.Shardkey)
 	fmt.Println(o.Sm_id)
 	fmt.Println(o.Date_created)

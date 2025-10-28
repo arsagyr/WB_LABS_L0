@@ -15,11 +15,12 @@ func SubscribeToOrderJSON(nc *nats.Conn) {
 		var request model.Order
 
 		if err := json.Unmarshal(msg.Data, &request); err != nil {
-			errorResponse := err.Error()
-			errorJSON, _ := json.Marshal(errorResponse)
+			log.Println(err.Error())
+			errorJSON, _ := json.Marshal(err.Error())
 			msg.Respond(errorJSON)
 			return
 		}
+
 		order := model.Order{
 			Order_uid:          request.Order_uid,
 			Track_number:       request.Track_number,
@@ -37,9 +38,7 @@ func SubscribeToOrderJSON(nc *nats.Conn) {
 			Oof_shard:          request.Oof_shard,
 		}
 
-		responseData := order.Order_uid + " is found"
-
-		responseJSON, _ := json.Marshal(responseData)
+		responseJSON, _ := json.Marshal(order.Order_uid + " is found")
 		msg.Respond(responseJSON)
 
 		log.Printf("Processed request for user ID: %v", request.Order_uid)

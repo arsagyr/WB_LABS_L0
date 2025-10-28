@@ -85,15 +85,15 @@ func InsertOrder(orderdb model.Order) {
 	InsertPayment(orderdb.Payment)
 	_, err := DB.Exec(`
         INSERT INTO orders (
-    order_uid, track_number, entry, 
-    locale, internal_signature, customer_id, 
-    delivery_service, shardkey, sm_id, 
-    date_created, oof_shard, 
-    delivery_id, payment_id 
-    ) VALUES (
-	 $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
-	(SELECT COALESCE(MAX(Id), 0) FROM  Deliveries),
-	(SELECT COALESCE(MAX(Id), 0) FROM  Payments))`,
+		order_uid, track_number, entry, 
+		locale, internal_signature, customer_id, 
+		delivery_service, shardkey, sm_id, 
+		date_created, oof_shard, 
+		delivery_id, payment_id 
+		) VALUES (
+		$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
+		(SELECT COALESCE(MAX(Id), 0) FROM  Deliveries),
+		(SELECT COALESCE(MAX(Id), 0) FROM  Payments))`,
 		orderdb.Order_uid,
 		orderdb.Track_number,
 		orderdb.Entry,
@@ -109,9 +109,24 @@ func InsertOrder(orderdb model.Order) {
 
 	if err != nil {
 		log.Println("Ошибка ввода заказа: " + err.Error())
+		_, err = DB.Exec(`
+		DELETE FROM Deliveries
+		WHERE id=(SELECT COALESCE(MAX(Id), 0) FROM  Deliveries)
+		`)
+		if err != nil {
+			log.Println("Ошибка удаления данных поставщика: " + err.Error())
+		}
+		_, err = DB.Exec(`
+		DELETE FROM Payments
+		WHERE id=(SELECT COALESCE(MAX(Id), 0) FROM  Payments)
+		`)
+		if err != nil {
+			log.Println("Ошибка удаления данных оплаты: " + err.Error())
+		}
+	} else {
+		for i := 0; i < len(orderdb.Items); i++ {
+			InsertItem(orderdb.Items[i])
+		}
 	}
 
-	for i := 0; i < len(orderdb.Items); i++ {
-		InsertItem(orderdb.Items[i])
-	}
 }

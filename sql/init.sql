@@ -1,5 +1,32 @@
+-- Таблица для доставки
+CREATE TABLE IF NOT EXISTS deliveries (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    zip VARCHAR(20),
+    city VARCHAR(100),
+    address TEXT,
+    region VARCHAR(100),
+    email VARCHAR(100)
+);
+
+-- Таблица для платежей
+CREATE TABLE IF NOT EXISTS payments (
+    id SERIAL PRIMARY KEY,
+    transaction VARCHAR(50),
+    request_id VARCHAR(100),
+    currency VARCHAR(10),
+    provider VARCHAR(50),
+    amount INTEGER,
+    payment_dt BIGINT,
+    bank VARCHAR(50),
+    delivery_cost INTEGER,
+    goods_total INTEGER,
+    custom_fee INTEGER
+);
+
 -- Таблица для заказов
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
     order_uid VARCHAR(50),
     track_number VARCHAR(50) NOT NULL,
@@ -14,38 +41,13 @@ CREATE TABLE orders (
     oof_shard VARCHAR(10),
     -- Связи с другими таблицами
     delivery_id INTEGER NOT NULL,
-    payment_id INTEGER NOT NULL
-);
-
--- Таблица для доставки
-CREATE TABLE deliveries (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    phone VARCHAR(20),
-    zip VARCHAR(20),
-    city VARCHAR(100),
-    address TEXT,
-    region VARCHAR(100),
-    email VARCHAR(100)
-);
-
--- Таблица для платежей
-CREATE TABLE payments (
-    id SERIAL PRIMARY KEY,
-    transaction VARCHAR(50),
-    request_id VARCHAR(100),
-    currency VARCHAR(10),
-    provider VARCHAR(50),
-    amount INTEGER,
-    payment_dt BIGINT,
-    bank VARCHAR(50),
-    delivery_cost INTEGER,
-    goods_total INTEGER,
-    custom_fee INTEGER
+    payment_id INTEGER NOT NULL,
+    FOREIGN KEY (delivery_id) REFERENCES deliveries (id) ON DELETE CASCADE,
+    FOREIGN KEY (payment_id) REFERENCES payments (id) ON DELETE CASCADE
 );
 
 -- Таблица для товаров
-CREATE TABLE items (
+CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
     chrt_id INTEGER NOT NULL,
     track_number VARCHAR(50),
@@ -59,9 +61,6 @@ CREATE TABLE items (
     brand VARCHAR(100),
     status INTEGER,
     -- Связь с заказом
-    order_id INTEGER NOT NULL
+    order_id INTEGER NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE
 );
-
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("delivery_id") REFERENCES "deliveries"("id") ON DELETE CASCADE;
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("payment_id") REFERENCES "payments"("id") ON DELETE CASCADE;
-ALTER TABLE "items" ADD CONSTRAINT "orders_fk3" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE CASCADE;

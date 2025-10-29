@@ -29,6 +29,19 @@ func InsertItem(item model.Item) {
 	)
 	if err != nil {
 		log.Println("Ошибка ввода товара: " + err.Error())
+		_, err = DB.Exec(`
+		DELETE FROM items
+		WHERE order_id = (SELECT COALESCE(MAX(Id), 0) FROM  Orders);
+		DELETE FROM  orders
+		WHERE id = (SELECT COALESCE(MAX(Id), 0) FROM  Orders);
+		DELETE FROM  payments
+		WHERE payments.id = (SELECT COALESCE(MAX(Id), 0) FROM  payments);
+		DELETE FROM  deliveries
+		WHERE deliveries.id = (SELECT COALESCE(MAX(Id), 0) FROM  deliveries);
+		`)
+		if err != nil {
+			log.Println("Ошибка удаления данных заказа: " + err.Error())
+		}
 	}
 }
 

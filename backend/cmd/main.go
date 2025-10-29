@@ -29,7 +29,10 @@ func runServer() {
 		url = nats.DefaultURL
 	}
 	log.Println(url)
-	nc, _ := nats.Connect(url)
+	nc, err := nats.Connect(url)
+	if err != nil {
+		log.Println(err)
+	}
 	defer nc.Drain()
 
 	subscribes.SubscribeToOrderJSON(nc)

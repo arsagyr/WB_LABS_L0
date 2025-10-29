@@ -62,6 +62,6 @@ CREATE TABLE items (
     order_id INTEGER NOT NULL
 );
 
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("delivery_id") REFERENCES "deliveries"("id");
-ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("payment_id") REFERENCES "payments"("id");
-ALTER TABLE "items" ADD CONSTRAINT "orders_fk3" FOREIGN KEY ("order_id") REFERENCES "orders"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("delivery_id") REFERENCES "deliveries"("id") ON DELETE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk2" FOREIGN KEY ("payment_id") REFERENCES "payments"("id") ON DELETE CASCADE;
+ALTER TABLE "items" ADD CONSTRAINT "orders_fk3" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE CASCADE;

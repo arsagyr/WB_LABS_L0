@@ -32,7 +32,7 @@ func InsertItem(item model.Item) {
 	}
 }
 
-func InsertDelivery(delivery model.Delivery) {
+func InsertDelivery(delivery model.Delivery) error {
 
 	_, err := DB.Exec(`
 	INSERT INTO deliveries (
@@ -53,9 +53,10 @@ func InsertDelivery(delivery model.Delivery) {
 	if err != nil {
 		log.Println("Ошибка ввода поставщика: " + err.Error())
 	}
+	return err
 }
 
-func InsertPayment(payment model.Payment) {
+func InsertPayment(payment model.Payment) error {
 
 	_, err := DB.Exec(`
 	INSERT INTO payments (
@@ -78,12 +79,19 @@ func InsertPayment(payment model.Payment) {
 	if err != nil {
 		log.Println("Ошибка ввода оплаты: " + err.Error())
 	}
+	return err
 }
 
-func InsertOrder(orderdb model.Order) {
-	InsertDelivery(orderdb.Delivery)
-	InsertPayment(orderdb.Payment)
-	_, err := DB.Exec(`
+func InsertOrder(orderdb model.Order) error {
+	err := InsertDelivery(orderdb.Delivery)
+	if err != nil {
+		goto end
+	}
+	err = InsertPayment(orderdb.Payment)
+	if err != nil {
+		goto end
+	}
+	_, err = DB.Exec(`
         INSERT INTO orders (
 		order_uid, track_number, entry, 
 		locale, internal_signature, customer_id, 
@@ -123,10 +131,13 @@ func InsertOrder(orderdb model.Order) {
 		if err != nil {
 			log.Println("Ошибка удаления данных оплаты: " + err.Error())
 		}
+		goto end
 	} else {
 		for i := 0; i < len(orderdb.Items); i++ {
 			InsertItem(orderdb.Items[i])
+			goto end
 		}
 	}
-
+end:
+	return err
 }

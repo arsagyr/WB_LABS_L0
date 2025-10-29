@@ -38,7 +38,14 @@ func SubscribeToOrderJSON(nc *nats.Conn) {
 			Oof_shard:          request.Oof_shard,
 		}
 
-		responseJSON, _ := json.Marshal(order.Order_uid + " is found")
+		var responseData struct {
+			Success bool   `json:"success"`
+			Message string `json:"message"`
+		}
+		responseData.Success = true
+		responseData.Message = order.Order_uid + " is gotten"
+
+		responseJSON, _ := json.Marshal(responseData)
 		msg.Respond(responseJSON)
 
 		log.Printf("Processed request for user ID: %v", request.Order_uid)

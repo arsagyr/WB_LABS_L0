@@ -16,16 +16,26 @@ func OrderTablePage(w http.ResponseWriter, r *http.Request) {
 	order := database.GetOrderByID(1)
 	orders := []model.Order{order}
 	s := CacheFileNameMaker() + "order.json"
-	CreateOrderJSON(orders, s)
+	CreateOrdersJSON(orders, s)
 	GetOrderDBTable(w, r, s)
 }
 func AllOrdersTablePage(w http.ResponseWriter, r *http.Request) {
 	orders := database.GetOrders()
 	s := CacheFileNameMaker() + "orders.json"
-	CreateOrderJSON(orders, s)
+	CreateOrdersJSON(orders, s)
 	GetOrderDBTable(w, r, s)
 }
-func CreateOrderJSON(orders []model.Order, filename string) {
+func CreateOrdersJSON(orders []model.Order, filename string) {
+	data, err := json.MarshalIndent(orders, "", "  ")
+	if err != nil {
+		log.Println(err)
+	}
+	err = os.WriteFile(filename, data, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+}
+func CreateOrderJSON(orders model.Order, filename string) {
 	data, err := json.MarshalIndent(orders, "", "  ")
 	if err != nil {
 		log.Println(err)
